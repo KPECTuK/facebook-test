@@ -4,4 +4,7 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/FacebookSDK/Examples/LogView.unity
+    guid: c07ff0bf6bea74c2eb681ac0cae44265
