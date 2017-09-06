@@ -1,15 +1,28 @@
-﻿using Assets.Scripts.Core.Services;
+﻿using Assets.Scripts.Core.Services.Facebook;
+using Assets.Scripts.Core.Services.Facebook.Operaitons;
 using UnityEngine;
 
 // ReSharper disable once UnusedMember.Global
 // ReSharper disable once CheckNamespace
-public class AppController : MonoBehaviour
+namespace Assets.Scripts.MonoBehaviours
 {
-	private FacebookService _service;
-
-	// ReSharper disable once UnusedMember.Local
-	private void OnEnable()
+	public class AppController : MonoBehaviour
 	{
-		_service = FacebookService.Create();
+		private FacebookService _service;
+
+		// ReSharper disable once UnusedMember.Local
+		private void OnEnable()
+		{
+			_service = FacebookService.Create();
+			_service.EnqueueOperation<LoginForReadOperation>();
+			_service.OnClientConnect();
+			_service.EnqueueOperation<ListFriendsOperation>();
+		}
+
+		// ReSharper disable once UnusedMember.Local
+		private void LateUpdate()
+		{
+			_service.Dispatch();
+		}
 	}
 }

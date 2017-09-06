@@ -50,6 +50,8 @@ _Unity/Library/
 ClientSource/*.sln
 Library/
 Temp/
+_build/
+_builds/
 
 # Unity tools state
 _Unity/*.xml
