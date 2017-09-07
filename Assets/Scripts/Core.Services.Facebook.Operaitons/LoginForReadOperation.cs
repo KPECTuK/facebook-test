@@ -1,5 +1,5 @@
-﻿using Facebook.Unity;
-using UnityEngine;
+﻿using Assets.Scripts.MonoBehaviours;
+using Facebook.Unity;
 
 namespace Assets.Scripts.Core.Services.Facebook.Operaitons
 {
@@ -9,11 +9,11 @@ namespace Assets.Scripts.Core.Services.Facebook.Operaitons
 		{
 			if(!FB.IsInitialized)
 			{
-				Debug.LogError("<color=blue>[facebook-srv]:> service is not initialized</color>");
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> service is not initialized</color>");
 				return;
 			}
 
-			Debug.Log("<color=blue>[facebook-srv]:> request login</color>");
+			GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> request login</color>");
 			FB.LogInWithReadPermissions(Service.GetServiceRequiredPriveleges(), OnResponse);
 		}
 
@@ -23,14 +23,14 @@ namespace Assets.Scripts.Core.Services.Facebook.Operaitons
 
 			if(!FB.IsLoggedIn)
 			{
-				Debug.Log("<color=blue>[facebook-srv]:> user had canceled login</color>");
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> user had canceled login</color>");
 				return;
 			}
 
-			Debug.Log("<color=blue>[facebook-srv]:> user had logged in successfuly with permissions:</color>");
+			GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> user had logged in successfuly with permissions:</color>");
 			foreach(var permission in AccessToken.CurrentAccessToken.Permissions)
 			{
-				Debug.Log(string.Format("<color=blue>[facebook-srv]:> {0} -> {1}</color>", AccessToken.CurrentAccessToken.UserId, permission));
+				GameCore.instance.LogMessage(string.Format("<color=blue>[facebook-srv]:> {0} -> {1}</color>", AccessToken.CurrentAccessToken.UserId, permission));
 			}
 		}
 	}

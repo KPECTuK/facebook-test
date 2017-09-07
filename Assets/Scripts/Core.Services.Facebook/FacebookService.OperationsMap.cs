@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Core.Services.Facebook.Operaitons;
+using Assets.Scripts.MonoBehaviours;
 using Facebook.Unity;
-using UnityEngine;
 
 namespace Assets.Scripts.Core.Services.Facebook
 {
@@ -67,7 +67,7 @@ namespace Assets.Scripts.Core.Services.Facebook
 			string[] required;
 			if(!_operationMap.TryGetValue(operaitonType, out required))
 			{
-				Debug.LogError("<color=blue>[facebook-srv]:> query is not in recognized: </color>" + operaitonType.Name);
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> query is not in recognized: </color>" + operaitonType.Name);
 				return null;
 			}
 
@@ -76,11 +76,11 @@ namespace Assets.Scripts.Core.Services.Facebook
 				: AccessToken.CurrentAccessToken.Permissions.Concat(_zeroLevelPermissions);
 			if(currentAllowed.Intersect(required).Count() != required.Length)
 			{
-				Debug.LogError("<color=blue>[facebook-srv]:> insufficient permissions to build query: </color>" + operaitonType.Name);
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> insufficient permissions to build query: </color>" + operaitonType.Name);
 				return null;
 			}
 
-			Debug.Log("<color=blue>[facebook-srv]:> building query: </color>" + operaitonType.Name);
+			GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> building query: </color>" + operaitonType.Name);
 
 			var operation = Activator.CreateInstance(operaitonType);
 			var injector = (IFacebookOperationInjector)operation;

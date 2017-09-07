@@ -1,0 +1,23 @@
+﻿{
+	"data": [
+		{
+			"name": "ambitestuser ab",
+			"id": "118592348879520"
+		},
+		{
+			"name": "ambitestuser ac",
+			"id": "109778746429722"
+		},
+		{
+			"name": "ambitestuser ad",
+			"id": "108357096572190"
+		}
+	],
+	"paging": {
+		"cursors": {
+			"before": "QVFIUm1sMFJqa1N0QWstYjM0OVFMNkRLdllIclJSejRhbGxQd05nMHFjcHpoMXdzd0VGdlFDdVpQbEc5dng5S1RqQ2xzSVFZAcExWUUt6Nm83UVdqR1F4TU5B",
+			"after": "QVFIUlYtcDZAKYk1LbTF6SGk5cjRoNHlLdW5Yd0xKRngzd1djVEtpbzZA1VExMQ1RzbXJ2VkFyZAFd5LXRkVGZAuenlYb05PamtJbTk4Uk1VQVFqZAzhCX2ZALT3JB"
+		}
+	},
+	"summary": { "total_count": 3 }
+}
