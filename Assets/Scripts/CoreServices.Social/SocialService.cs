@@ -8,24 +8,31 @@ namespace Assets.Scripts.CoreServices.Social
 
 	public interface IForeignUser : IEquatable<IForeignUser>
 	{
+		string Id { get; }
+		string Name { get; }
 		string Serialize();
 	}
 
 	public abstract class ForeignUserData<TService> : IForeignUser where TService : IForeignService
 	{
 		public abstract bool Equals(IForeignUser other);
+		public abstract string Id { get; }
+		public abstract string Name { get; }
 		public abstract string Serialize();
 	}
 
 	public class FacebookUserData : ForeignUserData<FacebookService>
 	{
-		public string Id { get; private set; }
-		public string Name { get; private set; }
+		private readonly string _id;
+		private readonly string _name;
+
+		public override string Id { get { return _id; } }
+		public override string Name { get { return _name; } }
 
 		public FacebookUserData(string id, string name)
 		{
-			Id = id;
-			Name = name;
+			_id = id;
+			_name = name;
 		}
 
 		public override bool Equals(IForeignUser other)

@@ -8,7 +8,7 @@ namespace Assets.Scripts.Core.Services.Facebook
 {
 	public partial class FacebookService : IForeignService
 	{
-		private const string APP_ID_S = @"1908937999428678";
+		public const string PERMISSION_PUBLISH_ACTIONS_S = @"publish_actions";
 
 		private static FacebookService _instance;
 		// pause game here because the focus will be lost
@@ -18,8 +18,10 @@ namespace Assets.Scripts.Core.Services.Facebook
 
 		private readonly Queue<Type> _pendingOperationTypes = new Queue<Type>();
 		private readonly Queue<IFacebookOperation> _operations = new Queue<IFacebookOperation>();
-		private IFacebookOperation _current;
+		private IFacebookOperation _currentOperation;
 		private bool _isOperational;
+		
+		public Uri AppLink { get; set; }
 
 		public void EnqueueOperation<TOperation>() where TOperation : FacebookOperationBase, new()
 		{
@@ -41,22 +43,31 @@ namespace Assets.Scripts.Core.Services.Facebook
 		}
 
 		// [Deprecated]
-		public void EnqueueOperation<TOperation>(TOperation instance) where TOperation : FacebookOperationBase, new() { }
+		public void EnqueueOperation<TOperation>(TOperation operation) where TOperation : FacebookOperationBase, new()
+		{
+			if(ReferenceEquals(null, operation))
+			{
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> failed to build operation: </color>" + typeof(TOperation).Name);
+				return;
+			}
+			_operations.Enqueue(operation);
+		}
 
 		public void OnClientConnect()
 		{
-			FB.Init(
-				APP_ID_S,
-				null,
-				true,
-				true,
-				true,
-				false,
-				true,
-				null,
-				"en_US",
-				OnAppChangeState,
-				OnInitilaized);
+			FB.Init(OnInitilaized, OnAppChangeState);
+			//FB.Init(
+			//	APP_ID_S,
+			//	null,
+			//	true,
+			//	true,
+			//	true,
+			//	false,
+			//	true,
+			//	null,
+			//	"en_US",
+			//	OnAppChangeState,
+			//	OnInitilaized);
 		}
 
 		public void OnClientDisconnect()
@@ -64,7 +75,7 @@ namespace Assets.Scripts.Core.Services.Facebook
 			_isOperational = false;
 			_operations.Clear();
 			_pendingOperationTypes.Clear();
-			_current = null;
+			_currentOperation = null;
 		}
 
 		public void Dispatch()
@@ -72,28 +83,23 @@ namespace Assets.Scripts.Core.Services.Facebook
 			if(!_isOperational)
 				return;
 
-			IFacebookOperation current;
-
-			if(_pendingOperationTypes.Count > 0)
-			{
-				current = _current ?? BuildOperation(_pendingOperationTypes.Dequeue());
-			}
-			else
-			{
-				current = _current ?? (_operations.Count > 0 ? _operations.Peek() : null);
-			}
+			var current = _currentOperation ?? (_operations.Count > 0 ? _operations.Dequeue() : null);
+			current = current ?? (_pendingOperationTypes.Count > 0 ? BuildOperation(_pendingOperationTypes.Dequeue()) : null);
 
 			if(ReferenceEquals(null, current))
 				return;
 
-			if(ReferenceEquals(null, _current))
+			if(ReferenceEquals(null, _currentOperation))
 			{
-				_current = current;
-				_current.Execute();
+				_currentOperation = current;
+				_currentOperation.Execute();
 				return;
 			}
 
-			_current = _current.IsComplete ? null : _current;
+			if(_currentOperation.IsComplete)
+			{
+				_currentOperation = null;
+			}
 		}
 
 		private void OnInitilaized()

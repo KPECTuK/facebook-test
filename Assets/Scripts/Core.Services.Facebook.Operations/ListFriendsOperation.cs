@@ -4,7 +4,7 @@ using Assets.Scripts.MonoBehaviours;
 using Facebook.MiniJSON;
 using Facebook.Unity;
 
-namespace Assets.Scripts.Core.Services.Facebook.Operaitons
+namespace Assets.Scripts.Core.Services.Facebook.Operations
 {
 	public class ListFriendsOperation : FacebookOperationBase
 	{
@@ -48,7 +48,7 @@ namespace Assets.Scripts.Core.Services.Facebook.Operaitons
 				}
 			}
 
-			GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> request friends raw result:\n</color>" + result.RawResult);
+			//GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> request friends raw result:\n</color>" + result.RawResult);
 
 			GameCore.instance.Dump();
 		}

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Assets.Scripts.Core.Services.Facebook.Operaitons;
+using Assets.Scripts.Core.Services.Facebook.Operations;
 using Assets.Scripts.MonoBehaviours;
 using Facebook.Unity;
 
@@ -15,6 +15,8 @@ namespace Assets.Scripts.Core.Services.Facebook
 			{ typeof(LoginForReadOperation), _zeroLevelPermissions },
 			{ typeof(LoginForPublishOperation), _zeroLevelPermissions },
 			{ typeof(ListFriendsOperation), new[] { "public_profile", "user_friends" } },
+			{ typeof(AppLinkRequestOperation), new[] { "public_profile", "user_friends" } },
+			{ typeof(InviteRequestOperation), new[] { "public_profile", "user_friends" } },
 		};
 
 		public IEnumerable<Type> GetOperationsAvailable()
@@ -22,7 +24,7 @@ namespace Assets.Scripts.Core.Services.Facebook
 			return _operationMap.Keys;
 		}
 
-		public IEnumerable<string> GetServiceRequiredPriveleges()
+		public IEnumerable<string> GetServiceRequiredPrivileges()
 		{
 			return _operationMap
 				.Values
@@ -32,7 +34,7 @@ namespace Assets.Scripts.Core.Services.Facebook
 				.ToArray();
 		}
 
-		public IEnumerable<string> GetOpeartionsPrivelegies(IEnumerable<Type> types)
+		public IEnumerable<string> GetOperationsPrivileges(IEnumerable<Type> types)
 		{
 			var result = new List<string>();
 			foreach(var type in types)

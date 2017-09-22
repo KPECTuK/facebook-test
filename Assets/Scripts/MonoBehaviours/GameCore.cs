@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using System.Text;
 using Assets.Scripts.Core.Services.Facebook;
-using Assets.Scripts.Core.Services.Facebook.Operaitons;
+using Assets.Scripts.Core.Services.Facebook.Operations;
 using Assets.Scripts.CoreServices.Social;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +18,13 @@ namespace Assets.Scripts.MonoBehaviours
 
 		private Text _logText;
 
-		private const int STRINGS_TOTAL_I = 20;
+#if UNITY_EDITOR
+		private const int STRINGS_TOTAL_I = 46;
+		private const int FONT_SIZE_I = 10;
+#else
+		private const int STRINGS_TOTAL_I = 46;
+		private const int FONT_SIZE_I = 32;
+#endif
 
 		public static GameCore instance { get; private set; }
 
@@ -27,17 +33,22 @@ namespace Assets.Scripts.MonoBehaviours
 		{
 			instance = this;
 			_logText = transform.GetComponentInChildren<Text>(true);
-			//
+			_logText.fontSize = FONT_SIZE_I;
 			_socialService = new SocialService();
 			_facebookService = new FacebookService();
 			_facebookService.EnqueueOperation<LoginForReadOperation>();
+			_facebookService.EnqueueOperation<AppLinkRequestOperation>();
 			_facebookService.EnqueueOperation<ListFriendsOperation>();
 			_facebookService.OnClientConnect();
 		}
 
 		public void Dump()
 		{
-			LogMessage(_socialService.GetForeigns().Aggregate(new StringBuilder(), (builder, _) => builder.AppendLine(_.Serialize())).ToString());
+			// LogMessage(_socialService.GetForeigns().Aggregate(new StringBuilder(), (builder, _) => builder.AppendLine(_.Serialize())).ToString());
+
+			var invite = _facebookService.BuildOperation<InviteRequestOperation>();
+			invite.FacebookContact = _socialService.GetForeigns().FirstOrDefault(_ => _.Name.Equals("ambitestuser ab"));
+			_facebookService.EnqueueOperation(invite);
 		}
 
 		public void LogMessage(string message)
