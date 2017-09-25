@@ -15,14 +15,14 @@ namespace Assets.Scripts.Core.Services.Facebook.Operations
 		{
 			if(!FB.IsInitialized)
 			{
-				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> try invite message request:  service is not initialized - passing by..</color>");
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> try invite message request: service is not initialized - passing by..</color>");
 				AssertResult(false);
 				return;
 			}
 
 			if(ReferenceEquals(null, FacebookContact))
 			{
-				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> try invite message request:  contact is abset - passing by..</color>");
+				GameCore.instance.LogMessage("<color=blue>[facebook-srv]:> try invite message request: contact is abset - passing by..</color>");
 				AssertResult(false);
 				return;
 			}
@@ -44,7 +44,6 @@ namespace Assets.Scripts.Core.Services.Facebook.Operations
 				string.Empty, // data
 				"game-invite-title",
 				OnResponse);
-
 
 			//FB.Mobile.AppInvite(
 			//	url,

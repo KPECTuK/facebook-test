@@ -39,14 +39,14 @@ namespace Assets.Scripts.Core.Services.Facebook.Operations
 			}
 
 			Context.LogMessage(isSuccess
-				? string.Format(new[]
+				? new[]
 				{
 					"raw: " + result.RawResult,
 					"app Ref: " + result.Ref,
 					"app Url: " + result.Url,
 					"app TargetUrl: " + result.TargetUrl,
-					"link storred: " + Context.Resolve<FacebookService>().AppLink,
-				}.ToText())
+					"link stored: " + Context.Resolve<FacebookService>().AppLink,
+				}.ToText()
 				: "<color=blue>[facebook-srv]:> user has failed app link request</color>");
 
 			AssertResult(isSuccess);
